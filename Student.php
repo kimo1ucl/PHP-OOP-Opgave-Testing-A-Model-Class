@@ -1,31 +1,50 @@
 <?php
 require_once 'Person.php';
 
-Class Student extends Person{
-    private string $class;
+class Student extends Person{
 
-    function __construct($firstname, $middlename, $lastname){
-        parent::__construct($firstname, $middlename, $lastname);
+    private  $schoolclass;
+
+    public function __construct($id,$firstname, $middlename, $lastname){
+        parent::__construct($id, $firstname, $middlename, $lastname);
     }
-
-    public function __toString()
+    function __toString()
     {
         $rt =
-              parent::getfirstname()."\n".
-              parent::getmiddlename()."\n".
-              parent::getlastname()."\n";  
-        return $rt; 
+        parent::getId().";".
+        parent::getfirstname().";".
+        parent::getmiddlename().";".
+        parent::getlastname()."\n"; 
+
+        return $rt;
+    }
+    public function addSchoolClass($schoolclass)
+    {
+        if (!$this->schoolclass == $schoolclass)
+        {
+            $this->schoolclass = $schoolclass; 
+        }
+        else{
+            throw new Exception("this schoolclass is allready assigned this student".$schoolclass->__toString());
+        }
+               
+        return $this;
     }
 
-    public function addClass($classname)
+    public function removeSchoolClass($schoolclass)
     {
-        $this->class = $classname;
-    }
-   
-    public function removeClass($classname)
-    {
-        return $this->class;
+        if ($this->schoolclass == $schoolclass)
+        {
+            $this->schoolclass = null;           
+        }
+        else{
+            throw new Exception("this schoolclass was not found assigned to this student".$schoolclass->__toString());
+        }
+               
+        return $this;
     }
 
+    public function getSchoolClass():object{
+        return $this->schoolclass;
+    }
 }
-?>

@@ -1,25 +1,24 @@
-<?php 
+<?php
+
+
+// MacOS 12.2.1
 
 require_once 'School.php';
-$s = new School("UCL Seebladsgade","Seebladsgade 1, 5000 Odense C");
 
-#test add remove teacher 
-#add a teacher - expected $rc = 0
-$rc0 = $s->addTeacher(1,"Kim","Vestergård","Mogensen",500);
-#try to add same teacher - expected $rc = -1
-$rc1 = $s->addTeacher(1,"Kim","Vestergård","Mogensen",500);
-#remove teacher - expected $rc = 0
-$rc2 =$s->removeTeacher(1); 
-#remove not existing teacher - expected $rc = -1
-$rc3 =$s->removeTeacher(2);
+$s = new School(1,"UCL Seebladsgade","Seebladsgade 1, 5000 Odense C");
+$rc = $s->addSchoolClass(10, "ØIOE211");
+$rc = $s->addSchoolClass(20, "ØIOE212");
+$rc = $s->addSchoolClass(30, "ØIOE213");
+$rc = $s->addSchoolClass(40, "ØIOE214");
 
-#test add SchoolClass
+$rc = $s->addStudent(1,"Bruce","Karate","Lee");
+$rc = $s->addStudent(2,"George","","Michael");
+$rc = $s->addStudent(3,"Michael","","Jackson");
 
-#test add teacher then add a SchoolClass to the teacher 
-#test add teacher then add a same SchoolClass to the teacher - fail
-#test add teacher then remove same SchoolClass to the teacher - success
+$students = $s->getStudents();
+$schoolclasses = $s->getSchoolClasses();
 
-#test add student then add a SchoolClass to the student 
-#...
+$stud = $students[1];
+$sc = $schoolclasses[40];
+$stud->addSchoolClass($sc);
 
-echo "test ends!";

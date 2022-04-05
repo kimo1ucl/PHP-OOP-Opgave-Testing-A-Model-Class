@@ -1,67 +1,61 @@
 <?php
 require_once 'Person.php';
 
-Class Teacher extends Person
-{
-    private $class = Array();
+Class Teacher extends Person{
     private float $salary;
-    
-    function __construct($id, $firstname, $middlename, $lastname, $salary){
+
+    private $schoolclasses = Array();
+
+    public function __construct($id,$firstname, $middlename, $lastname, $salary){
         parent::__construct($id, $firstname, $middlename, $lastname);
-        if (isset($salary)){
+        if(isset($salary)){
             $this->salary = $salary;
         }
-        else{
+        else
+        {
             $this->salary = 0;
         }
     }
-
-    public function __toString()
-    {
-        $rt =
-              parent::getId()."\n".
-              parent::getfirstname()."\n".
-              parent::getmiddlename()."\n".
-              parent::getlastname()."\n".  
-              (string) $this->salary."\n";  
-
-        return $rt; 
+    
+    function getSchoolClass():Array{
+        return $this->schoolclasses;
     }
+    function addSchoolClass($schoolclass):object{
 
-    //TODO: 
-    //logic (returncode) to signal if succesfull
-    //- if class allready registered, no change
-    public function addClass($classname)
-    {
-        array_push($this->class ,$classname);
-    }
-    //TODO
-    // remove the class if found
-    public function removeClass($classname)
-    {
-        
-    }
-
-    //returning a string formatted as csv
-    public function getClass():string
-    {
-        $s="";
-        foreach ($this->class as $class)
-        {   
-            $s .= $class.";";
+        $id = $schoolclass->GetId();
+        if (!isset($this->schoolclasses[$id])){
+            $this->schoolclasses[$id] = $schoolclass;  
         }
-        return $s;
-    }
-    public function getSalary()
-    {
-        // do some security stuff
-        return $this->salary;
-    }
-    public function setSalary($salary)
-    {
-        // do some security stuff
-        $this->salary = $salary;
+        else{
+            throw new Exception("this schooclass has allready been to this teacher: ".$schoolclass->__toString()); 
+        }        
         return $this;
     }
+
+    function removeSchoolClass($schoolclass):object{
+        $rc = -1;
+        $id = $schoolclass->getId();
+        if (isset($this->schoolclasses[$id])){
+            unset($this->schoolclasses[$id]);   
+            $rc = 0;
+        }
+        else{
+            throw new Exception("this schoolclass was not found assigned to this teacher:".$schoolclass->__toString());
+        }
+        return $this;
+    }
+
+
+    function __toString()
+    {
+        $rt =
+        parent::getId().";".
+        parent::getfirstname().";".
+        parent::getmiddlename().";".
+        parent::getlastname().";".  
+        (string) $this->salary."\n"; 
+
+        return $rt;
+    }
+
 }
-?>
